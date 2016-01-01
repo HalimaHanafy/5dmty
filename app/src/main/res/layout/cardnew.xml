@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#eee"
+        android:id="@+id/content"
+        android:clipToPadding="false"
+        android:paddingTop="0dp">
+
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="8dp"
+                card_view:cardBackgroundColor="#2d566b"
+                card_view:cardCornerRadius="2dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imagepic"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/one"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/image_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#50000000"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="12dp"
+                        android:text="اسم الصورة"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:paddingRight="15dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                card_view:cardBackgroundColor="@color/fab"
+                card_view:cardCornerRadius="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/imag"
+                        android:paddingRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="التفاصيل :"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_above="@+id/image_other"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                card_view:cardBackgroundColor="#ffda86"
+                card_view:cardCornerRadius="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/image_de"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="معلومات :"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/image_d"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="المكان :"
+                        android:padding="10dp"
+
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf="@+id/image_details"
+                        android:layout_alignRight="@+id/image_de"
+                        android:layout_alignEnd="@+id/image_de" />
+
+                    <TextView
+                        android:id="@+id/image_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:padding="10dp"
+                        android:text="تفاصيل الصوره"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/image_de"
+                        android:layout_toStartOf="@+id/image_de" />
+
+                    <TextView
+                        android:id="@+id/image_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:padding="10dp"
+                        android:text="مكان "
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_below="@+id/image_de"
+                        android:layout_toLeftOf="@+id/image_d"
+                        android:layout_toStartOf="@+id/image_d" />
+
+
+                </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="1dp"
+                card_view:cardBackgroundColor="@color/fab"
+                card_view:cardCornerRadius="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:paddingRight="15dp"
+                        android:id="@+id/image_pace"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="المكان على الخريطة :"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"/>
+
+                    <fragment
+                        android:layout_below="@id/image_pace"
+
+                        android:id="@+id/map"
+                        android:layout_width="fill_parent"
+                        android:layout_height="200dp"
+                        class="com.google.android.gms.maps.MapFragment"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <!-- The "loading indicator" view. This view overlaps with
+                 the content, so the visibility of these two views
+                 should be mutually exclusive. -->
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+    <ProgressBar android:id="@+id/loading_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="100dp"
+        android:layout_gravity="center"
+        android:indeterminate="false" />
+
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FEFEFE</color>
+    <color name="white_off">#BDBDBD</color>
+    <color name="fab">#ffb63b</color>
+
+
+
+
+
+    <!--<color name="colorPrimary">#9C27B0</color>-->
+    <!--<color name="colorPrimaryDark">#7B1FA2</color>-->
+    <!--<color name="primary_light">#E1BEE7</color>-->
+    <!--<color name="colorAccent">#9E9E9E</color>-->
+    <!--<color name="text_color">#212121</color>-->
+    <!--<color name="secondary_text">#727272</color>-->
+    <!--<color name="icons">#FFFFFF</color>-->
+    <!--<color name="divider">#B6B6B6</color>-->
+
+    <color name="colorPrimary">#26776c</color>
+    <color name="colorPrimaryDark">#1e625a</color>
+    <color name="primary_light">#B2DFDB</color>
+    <color name="colorAccent">#9E9E9E</color>
+    <color name="text_color">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+
+
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="primary_light">#C5CAE9</color>-->
+    <!--<color name="colorAccent">#448AFF</color>-->
+    <!--<color name="text_color">#212121</color>-->
+    <!--<color name="secondary_text">#727272</color>-->
+    <!--<color name="icons">#FFFFFF</color>-->
+    <!--<color name="divider">#B6B6B6</color>-->
+
+
+
+    <!--<color name="colorPrimary">#4CAF50</color>-->
+    <!--<color name="colorPrimaryDark">#388E3C</color>-->
+    <!--<color name="primary_light">#C8E6C9</color>-->
+    <!--<color name="colorAccent">#4CAF50</color>-->
+    <!--<color name="text_color">#212121</color>-->
+    <!--<color name="secondary_text">#727272</color>-->
+    <!--<color name="icons">#FFFFFF</color>-->
+    <!--<color name="divider">#B6B6B6</color>-->
+
+
+    <!--<color name="colorPrimary">#673AB7</color>-->
+    <!--<color name="colorPrimaryDark">#512DA8</color>-->
+    <!--<color name="primary_light">#D1C4E9</color>-->
+    <!--<color name="colorAccent">#448AFF</color>-->
+    <!--<color name="text_color">#212121</color>-->
+    <!--<color name="secondary_text">#727272</color>-->
+    <!--<color name="icons">#FFFFFF</color>-->
+    <!--<color name="divider">#B6B6B6</color>-->
+
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_height="wrap_content"  android:layout_width="wrap_content">
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/content2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.example.baha.myapplication.FirstFragment"
+        android:id="@+id/fragment"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        tools:layout="@layout/fragment_first" />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.example.baha.myapplication.SecondFragment"
+        android:id="@+id/fragment2"
+        android:layout_below="@+id/fragment"
+        android:layout_centerHorizontal="true"
+        tools:layout="@layout/fragment_second" />
+
+</LinearLayout>
+
+<ProgressBar android:id="@+id/loading_spinner2"
+style="?android:progressBarStyleLarge"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:layout_gravity="center" />
+
+    </RelativeLayout>

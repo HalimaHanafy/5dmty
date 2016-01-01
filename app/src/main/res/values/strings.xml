@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">خدمتى</string>
+    <string name="action_about_us">من نحن</string>
+    <string name="action_settings">Setting</string>
+    <string name="search">بحث</string>
+
+</resources>

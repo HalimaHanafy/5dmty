@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:id="@+id/content8"
+    android:clipToPadding="false"
+    android:paddingTop="0dp">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/logo_about"
+        android:id="@+id/imageView2" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="نحن شركه برمجيات تفتخر ان تقدم خدمات متقدمه ومتطوره للعملاءها وتساعدهم على تطوير اعمالهم والوصول الى حصه تسويقيه من على الانترنت, ونفتخر اننا ومنذوا البدايه التى لا تعد كبيره حتى الان فى السوق الا اننا نثبت كل يوم عن الاخر اننا نتميز عن غيرنا من المؤسسات البرمجيه باكثر شىء و افضل شىء فى المؤسسه وهو الدعم الفنى بعد البيع.
+
+"
+
+        android:textSize="20dp"
+        android:id="@+id/txt"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
+</ScrollView>

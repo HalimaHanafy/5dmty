@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:id="@+id/content8"
+    android:clipToPadding="false"
+    android:paddingTop="0dp">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/insert_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="ادخل الإسم هنا "
+        android:ems="10" />
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_place"
+        android:layout_below="@+id/insert_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="15dp"
+        android:spinnerMode="dropdown" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_cat"
+        android:layout_below="@+id/spinner_place"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/newT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="اخــــتر الصورة" />
+
+
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:background="@color/common_action_bar_splitter"
+        android:layout_width="fill_parent"
+        android:src="@drawable/add"
+        android:layout_height="200dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/details"
+        android:hint="بيــانات"
+        android:layout_gravity="center_horizontal" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/other"
+        android:hint="بيــانات أخرى"
+        android:layout_gravity="center_horizontal" />
+    <Button
+        android:id="@+id/location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        style="?android:attr/buttonStyleSmall"
+        android:paddingTop="5dp"
+        android:text="حدد المكان" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textviewlocation"/>
+    <fragment
+        android:layout_below="@id/textviewlocation"
+        android:id="@+id/mapAdd"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/halima_button_def"
+        style="?android:attr/buttonStyleSmall"
+        android:paddingTop="5dp"
+        android:text="إضافة" />
+</LinearLayout>
+   </ScrollView>
+
+
+
+<ProgressBar android:id="@+id/loading_spinner8"
+style="?android:progressBarStyleLarge"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:padding="100dp"
+android:layout_gravity="center"
+android:indeterminate="false" />
+
+    </RelativeLayout>
