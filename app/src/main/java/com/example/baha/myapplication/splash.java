@@ -22,6 +22,7 @@ public class splash extends Activity {
     private ViewGroup sceneRoot;
     public static boolean signedIn = false;
     SharedPreferences sharedPref;
+    int offset;
 
     ImageView img;
     @Override
@@ -33,7 +34,7 @@ public class splash extends Activity {
 
 
         setContentView(R.layout.splash);
-//        img= (ImageView) findViewById(R.id.imgLogo);
+
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -44,25 +45,21 @@ public class splash extends Activity {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
 
-//
-//                //checking sharedPrefs to see if we had signed in already - if we have, skip this activity
-//                sharedPref = getSharedPreferences("transportation", getApplicationContext().MODE_PRIVATE);
-//                signedIn = sharedPref.getBoolean("signedIn", false);
-//
-//                if (signedIn) {
-//                    Intent intent = new Intent(splash.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//                else
-//                {
+                sharedPref = getSharedPreferences("5dmty", getApplicationContext().MODE_PRIVATE);
+                offset = sharedPref.getInt("offset", -1);
+                if(offset==-1){
+                    SharedPreferences preferences = getSharedPreferences("5dmty", getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt("offset", 0);
+                    editor.commit();
+                }
+
+
                 Intent i = new Intent(splash.this, MainActivity.class);
                 startActivity(i);
 
-                // close this activity
+
                 finish();
 
 

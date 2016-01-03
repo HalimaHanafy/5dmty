@@ -3,6 +3,7 @@ package com.example.baha.myapplication;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,8 +20,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +32,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.StorageDatabaseAdapter;
+
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayout.OnRefreshListener{
@@ -43,15 +44,18 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     private ProgressDialog pDialog;
     private SolventRecyclerViewAdapter rcAdapter;
     android.support.v7.app.ActionBar abar;
-
+    private String marketscache[][];
+    private Bitmap bitmap=null;
 
     private String URL_TOP_250 = "http://mar.gt4host.com/market/public/webservice/listallmarkets";
     private SwipeRefreshLayout swipeRefreshLayout;
-//    private ListView listView;
+
     private SwipeListAdapter adapter;
     private List<ItemObjects> movieList;
+    private List<ItemObjects> cachedmovieList;
     private JSONArray market = null;
-
+    StorageDatabaseAdapter storageHelper ;
+    SharedPreferences sharedPref;
     // initially offset will be 0, later will be updated while parsing the json
     private int offSet = 0;
 
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        storageHelper = new StorageDatabaseAdapter(this);
         Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
 
         abar = getSupportActionBar();
@@ -74,17 +78,15 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         textviewTitle.setText("خدمتى");
         textviewTitle.setTypeface(face);
         textviewTitle.setTextSize(20);
-
+        sharedPref = this.getSharedPreferences("5dmty", this.getApplicationContext().MODE_PRIVATE);
         abar.setDisplayUseLogoEnabled(true);
 
 
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
         abar.setDisplayShowTitleEnabled(false);
-
-//        abar.setDisplayHomeAsUpEnabled(true);
         abar.setIcon(R.color.colorPrimaryDark);
-//        abar.setHomeButtonEnabled(true);
+
 
 
 
@@ -98,7 +100,6 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         recyclerView.setHasFixedSize(false);
 
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, gaggeredGridLayoutManager.VERTICAL);
-        gaggeredGridLayoutManager_sec = new StaggeredGridLayoutManager(2, gaggeredGridLayoutManager_sec.VERTICAL);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
         adapter = new SwipeListAdapter(MainActivity.this, movieList);
@@ -107,22 +108,31 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
         movieList = new ArrayList<>();
-
-        rcAdapter= new SolventRecyclerViewAdapter(MainActivity.this, movieList);
+        cachedmovieList=new ArrayList<>();
+        rcAdapter= new SolventRecyclerViewAdapter(MainActivity.this, cachedmovieList);
         recyclerView.setAdapter(rcAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(this);
+        marketscache=storageHelper.getallmarket();
 
-        /**
-         * Showing Swipe Refresh animation on activity create
-         * As animation won't start on onCreate, post runnable is used
-         */
+        if(marketscache.length>0){
+            movieList.clear();
+            for(int i=0;i<marketscache.length;i++){
+
+                ItemObjects m = new ItemObjects(parseInt(marketscache[i][0]),marketscache[i][1],marketscache[i][2],marketscache[i][5],marketscache[i][3],marketscache[i][4],marketscache[i][6],marketscache[i][7]);
+                cachedmovieList.add(0, m);
+            }
+            new GetMarketImage().execute(cachedmovieList);
+
+        }
+
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
+
                                         swipeRefreshLayout.setRefreshing(true);
                                         gaggeredGridLayoutManager.invalidateSpanAssignments();
-                                        new GetMarkets().execute();
+                                            new GetMarkets().execute();
                                     }
                                 }
         );
@@ -171,6 +181,12 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+
+        Boolean network=sharedPref.getBoolean("Network", true);
+
+        if (network && cachedmovieList.size()>0)
+            new GetMarketImage().execute(cachedmovieList);
+
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
         new GetMarkets().execute();
     }
@@ -187,36 +203,56 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
 
         @Override
         protected String doInBackground(Void... arg0) {
+            offSet=sharedPref.getInt("offset", 0);
             ServiceHandler servicehandler = new ServiceHandler();
             String jsonStr = servicehandler.makeServiceCall(URL_TOP_250+"?offset="+offSet, ServiceHandler.GET);
             if(jsonStr!=null){
                 Log.d("Markets >>",jsonStr);
-                Bitmap bitmap=null;
+                Boolean listid=false;
 
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     market = jsonObj.getJSONArray("markets");
                     for (int i = 0; i < market.length(); i++) {
+                        listid=false;
                         JSONObject c = market.getJSONObject(i);
                         int img_id = parseInt(c.getString("market_id"));
                         String img_name = c.getString("market_name");
                         String img_url = c.getString("market_url");
+                        String img_details = c.getString("market_details");
+                        String img_other = c.getString("market_other");
+                        String img_place = c.getString("place_name");
+                        String img_long = c.getString("market_long");
+                        String img_latt = c.getString("market_latt");
+                        String img_updates = c.getString("market_updates");
                         try {
 
                             bitmap = BitmapFactory.decodeStream((InputStream)new URL(img_url).getContent());
-
+                            int deleteid=storageHelper.deletemarket(img_id);;
+                            long insertedid = storageHelper.insertMarket(img_id, img_name, img_url, img_details, img_other,img_place, img_long, img_latt, img_updates);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        ItemObjects m = new ItemObjects(img_name, bitmap,img_id);
-                        movieList.add(0, m);
+                        ItemObjects m = new ItemObjects(img_id,img_name,bitmap,img_place,img_details,img_other,img_long,img_latt);
+                        for(int j=0;j<cachedmovieList.size();j++){
+                            if(cachedmovieList.get(j).getId()==img_id){
+                                listid=true;
+                            }
+
+                        }
+                        if(listid==false){
+                            cachedmovieList.add(0, m);
+                        }
+
                         bitmap=null;
-
-                        // updating offset value to highest value
-                        if (img_id >= offSet)
-                            offSet = img_id;
-
-
+                    }
+                    if(market.length()==10)
+                        {
+                        offSet += 10;
+                        sharedPref = getSharedPreferences("5dmty", getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("offset", offSet);
+                        editor.commit();
                     }
 
                 } catch (JSONException e) {
@@ -235,12 +271,11 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
             super.onPostExecute(s);
             // stopping swipe refresh
 
-            if(s!=null) {
+            if(s!= null) {
                 /////*********************الحـــــــــــــــــــــــــــــــــــــل*************//////
                 gaggeredGridLayoutManager.onDetachedFromWindow(recyclerView, null);
                 gaggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-                gaggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-                rcAdapter = new SolventRecyclerViewAdapter(MainActivity.this, movieList);
+                rcAdapter = new SolventRecyclerViewAdapter(MainActivity.this, cachedmovieList);
                 recyclerView.setAdapter(rcAdapter);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -263,5 +298,71 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
 
         }
     }
+
+    public class GetMarketImage extends AsyncTask<List<ItemObjects>, Void,List<ItemObjects>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<ItemObjects> doInBackground(List<ItemObjects>... args) {
+
+            for(int i=0;i<args[0].size();i++){
+                if(args[0].get(i).getPhoto()==null){
+                    try {
+
+                        bitmap = BitmapFactory.decodeStream((InputStream)new URL(args[0].get(i).getUrl()).getContent());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    args[0].get(i).setPhoto(bitmap);
+                }
+
+                bitmap=null;
+
+            }
+
+            return args[0];
+        }
+
+        @Override
+        protected void onPostExecute(List<ItemObjects> s) {
+            super.onPostExecute(s);
+            // stopping swipe refresh
+
+            if(s!= null) {
+                /////*********************الحـــــــــــــــــــــــــــــــــــــل*************//////
+                gaggeredGridLayoutManager.onDetachedFromWindow(recyclerView, null);
+                gaggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                rcAdapter = new SolventRecyclerViewAdapter(MainActivity.this, s);
+                recyclerView.setAdapter(rcAdapter);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+            else {
+
+                //snakebar
+                Toast.makeText(getApplicationContext(), "open network", Toast.LENGTH_LONG).show();
+                // stopping swipe refresh
+                swipeRefreshLayout.setRefreshing(true);
+
+            }
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            // stopping swipe refresh
+            swipeRefreshLayout.setRefreshing(false);
+
+        }
+    }
+
+
+
+
+
 
 }

@@ -47,18 +47,13 @@ public class SwipeListAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-//            convertView = inflater.inflate(R.layout.list_row, null);
+
         convertView = inflater.inflate(R.layout.solvent_list, null);
 
-//        TextView serial = (TextView) convertView.findViewById(R.id.serial);
-//        TextView title = (TextView) convertView.findViewById(R.id.title);
 
         TextView subcountry_name = (TextView) convertView.findViewById(R.id.subcountry_name);
         TextView country_name = (TextView) convertView.findViewById(R.id.country_name);
         ImageView countryPhoto = (ImageView)  convertView.findViewById(R.id.country_photo);
-
-//        serial.setText(String.valueOf(movieList.get(position).id));
-//        title.setText(movieList.get(position).title);
 
         subcountry_name.setText(String.valueOf(movieList.get(position).getId()));
         country_name.setText(movieList.get(position).getName());
