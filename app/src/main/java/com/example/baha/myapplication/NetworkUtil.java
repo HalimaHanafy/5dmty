@@ -3,6 +3,7 @@ package com.example.baha.myapplication;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 public class NetworkUtil {
 	
@@ -31,10 +32,13 @@ public class NetworkUtil {
 		String status = null;
 		if (conn == NetworkUtil.TYPE_WIFI) {
 			status = "Wifi enabled";
+			Toast.makeText(context, "" + status, Toast.LENGTH_SHORT).show();
 		} else if (conn == NetworkUtil.TYPE_MOBILE) {
 			status = "Mobile data enabled";
+			Toast.makeText(context, "" + status, Toast.LENGTH_SHORT).show();
 		} else if (conn == NetworkUtil.TYPE_NOT_CONNECTED) {
 			status = "Not connected to Internet";
+			Toast.makeText(context, "" + status, Toast.LENGTH_SHORT).show();
 		}
 		return status;
 	}

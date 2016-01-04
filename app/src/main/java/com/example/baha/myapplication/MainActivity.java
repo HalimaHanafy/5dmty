@@ -113,26 +113,29 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         recyclerView.setAdapter(rcAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        marketscache=storageHelper.getallmarket();
 
-        if(marketscache.length>0){
-            movieList.clear();
-            for(int i=0;i<marketscache.length;i++){
-
-                ItemObjects m = new ItemObjects(parseInt(marketscache[i][0]),marketscache[i][1],marketscache[i][2],marketscache[i][5],marketscache[i][3],marketscache[i][4],marketscache[i][6],marketscache[i][7]);
-                cachedmovieList.add(0, m);
-            }
-            new GetMarketImage().execute(cachedmovieList);
-
-        }
 
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
+                                        marketscache=storageHelper.getallmarket();
 
-                                        swipeRefreshLayout.setRefreshing(true);
-                                        gaggeredGridLayoutManager.invalidateSpanAssignments();
+                                        if(marketscache.length>0){
+                                            movieList.clear();
+                                            for(int i=0;i<marketscache.length;i++){
+
+                                                ItemObjects m = new ItemObjects(parseInt(marketscache[i][0]),marketscache[i][1],marketscache[i][2],marketscache[i][5],marketscache[i][3],marketscache[i][4],marketscache[i][6],marketscache[i][7]);
+                                                cachedmovieList.add(0, m);
+                                            }
+                                            new GetMarketImage().execute(cachedmovieList);
+
+                                        }
+                                        else{
+                                            swipeRefreshLayout.setRefreshing(true);
+                                            gaggeredGridLayoutManager.invalidateSpanAssignments();
                                             new GetMarkets().execute();
+                                        }
+
                                     }
                                 }
         );
@@ -182,9 +185,19 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     @Override
     public void onRefresh() {
 
-        Boolean network=sharedPref.getBoolean("Network", true);
-
-        if (network && cachedmovieList.size()>0)
+//        String network=sharedPref.getString("Network", "first");
+//        String updated=sharedPref.getString("updated", "first");
+//        if(updated.equals("first")){
+//            Toast.makeText(this,"updated first",Toast.LENGTH_LONG).show();
+//        }
+//        else if(updated.equals("true")){
+//            Toast.makeText(this,"updated true",Toast.LENGTH_LONG).show();
+//
+//        }
+//        else{
+//            Toast.makeText(this,"updated false",Toast.LENGTH_LONG).show();
+//        }
+        if ( cachedmovieList.size()>0)
             new GetMarketImage().execute(cachedmovieList);
 
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);

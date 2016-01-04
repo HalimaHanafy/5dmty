@@ -20,12 +20,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.StorageDatabaseAdapter;
+
 
 public class MyService extends Service {
     BroadcastReceiver mReceiver;
-
-
-
+    private  static StorageDatabaseAdapter storageHelper;
+    private static String url = "http://mar.gt4host.com/market/public/webservice/checkupdates";
+    private static String lastdate;
     public MyService()
     {
 
@@ -40,6 +42,7 @@ public class MyService extends Service {
 
 
 
+
         public NetworkChangeReciver(){
 
             super();
@@ -48,31 +51,92 @@ public class MyService extends Service {
         @Override
         public void onReceive(final Context mcontext, final Intent intent) {
                context = mcontext ;
+               storageHelper = new StorageDatabaseAdapter(mcontext);
 
                 String status = NetworkUtil.getConnectivityStatusString(mcontext);
-                Toast.makeText(mcontext, "" + status, Toast.LENGTH_SHORT).show();
 
-                if(!(status.equals("Not connected to Internet")))
+            if(!(status.equals("Not connected to Internet")))
                 {
-                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("Network", true);
-                    editor.commit();
+//                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putString("Network", "true");
+//                    editor.commit();
+//                    if(storageHelper.getMarketVersion()!=null){
+//                        lastdate=storageHelper.getMarketVersion();
+//                        new Getupdateddata().execute();
+//
+//                    }
 
                 }
                 else
                 {
-
-                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("Network", false);
-                    editor.commit();
+//                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putString("Network", "false");
+//                    editor.commit();
 
                 }
 
 
 
             }
+        private class Getupdateddata extends AsyncTask<Void, Void, Boolean> {
+
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+
+            }
+
+            @Override
+            protected Boolean  doInBackground(Void... arg0) {
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("updates",lastdate));
+                ServiceHandler servicehandler = new ServiceHandler();
+                String jsonStr = servicehandler.makeServiceCall(url, ServiceHandler.GET,nameValuePairs);
+                if(jsonStr!=null){
+                    try {
+                        JSONObject jsonObj = new JSONObject(jsonStr);
+                        if(jsonObj.getString("status").equals("True"))
+                            return true;
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+
+                // 2. set layoutManger
+
+                if(result==true){
+                    Toast.makeText(context,"on post true",Toast.LENGTH_LONG).show();
+                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("updated", "true");
+                    editor.commit();
+
+                }
+                else{
+                    Toast.makeText(context,"on post false",Toast.LENGTH_LONG).show();
+                    SharedPreferences preferences = context.getSharedPreferences("5dmty", context.getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("updated", "false");
+                    editor.commit();
+
+                }
+
+            }
+
+        }
 
 
     }
