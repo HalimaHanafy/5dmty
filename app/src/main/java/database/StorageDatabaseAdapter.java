@@ -129,7 +129,7 @@ public class StorageDatabaseAdapter {
     }
     public String getMarketVersion(){
         SQLiteDatabase db =helper.getWritableDatabase();
-        Cursor cursor=db.rawQuery("SELECT MAX("+ StorageHelper.market_on_updates+")  AS "+ StorageHelper.market_on_updates+" FROM "+ StorageHelper.MARKETTABLE, null);
+        Cursor cursor=db.rawQuery("SELECT MAX(" + StorageHelper.market_on_updates + ")  AS " + StorageHelper.market_on_updates + " FROM " + StorageHelper.MARKETTABLE, null);
         if(cursor.moveToNext())
         {
             int index1=cursor.getColumnIndex(StorageHelper.market_on_updates);
@@ -142,6 +142,16 @@ public class StorageDatabaseAdapter {
     public int deletemarket(int id){
         SQLiteDatabase db =    helper.getWritableDatabase();
         int count = db.delete(StorageHelper.MARKETTABLE,  StorageHelper.market_id + " = " + id, null);
+        return count ;
+    }
+    public int deleteplace(int id){
+        SQLiteDatabase db =    helper.getWritableDatabase();
+        int count = db.delete(StorageHelper.PLACETABLE, StorageHelper.place_id + " = " + id, null);
+        return count ;
+    }
+    public int deletecategory(int id){
+        SQLiteDatabase db =    helper.getWritableDatabase();
+        int count = db.delete(StorageHelper.CATEGORYTABLE,  StorageHelper.category_id + " = " + id, null);
         return count ;
     }
 

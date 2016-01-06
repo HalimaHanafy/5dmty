@@ -36,21 +36,12 @@ public class ItemObjects {
         this.id=id;
     }
 
-    public ItemObjects(int id, String name, Bitmap photo, String placename, String details, String other, String mlong, String mlatt) {
-        this.id = id;
-        this.name = name;
-        this.photo = photo;
-        this.placename = placename;
-        this.details = details;
-        this.other = other;
-        this.mlong = mlong;
-        this.mlatt = mlatt;
-    }
 
-    public ItemObjects(int id, String name, String photo, String placename, String details, String other, String mlong, String mlatt) {
+
+    public ItemObjects(int id, String name, String url, String placename, String details, String other, String mlong, String mlatt) {
         this.id = id;
         this.name = name;
-        this.url = photo;
+        this.url = url;
         this.placename = placename;
         this.details = details;
         this.other = other;

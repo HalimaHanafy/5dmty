@@ -43,7 +43,7 @@ public class SecondFragment extends Fragment {
         return view;
     }
 
-    public void updateTextField(String newText,String newPlace,String newCat,List<ItemObjects> newList){
+    public void updateTextField(String newText,String newPlace,String newCat,ArrayList<ItemObjects> newList){
 
         Log.d("txt>>",newText);
 

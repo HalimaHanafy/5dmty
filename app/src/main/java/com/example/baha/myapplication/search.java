@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class search extends AppCompatActivity implements FirstFragment.OnFragmen
     }
 
     @Override
-    public void onFragmentInteraction(String userContent, String sel_place, String sel_cat, List<ItemObjects> list) {
+    public void onFragmentInteraction(String userContent, String sel_place, String sel_cat, ArrayList<ItemObjects> list) {
 
 
         SecondFragment secondFragment = (SecondFragment)getSupportFragmentManager().findFragmentById(R.id.fragment2);
@@ -72,6 +73,7 @@ public class search extends AppCompatActivity implements FirstFragment.OnFragmen
 
 
     }
+
 
 
     @Override

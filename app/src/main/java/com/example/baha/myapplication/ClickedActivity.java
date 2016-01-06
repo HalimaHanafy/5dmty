@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,22 +24,24 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
 import java.io.InputStream;
 import java.net.URL;
-
-import models.market;
 
 public class ClickedActivity extends ActionBarActivity {
     private static String SERVICE_URL = "http://mar.gt4host.com/market/public/webservice/getimage";
     private ProgressDialog pDialog;
     private int imageId;
     private String imageName;
+    private String place;
+    private String oth;
+    private double latt;
+    private double longg;
+    private String det;
+    private String url;
     private ImageView image;
-    private TextView image_name,image_namee, image_place, image_details, image_other;
+    private TextView image_name, image_place, image_details, image_other;
     private TextView one,two,three,four;
-    private market marketobject;
     private Bitmap bitmap;
 
     public static GoogleMap map;
@@ -52,7 +55,7 @@ public class ClickedActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.clicked_activity);
+     //   setContentView(R.layout.clicked_activity);
         setContentView(R.layout.cardnew);
 
         mLoadingView = findViewById(R.id.loading_spinner);
@@ -77,6 +80,12 @@ public class ClickedActivity extends ActionBarActivity {
         Intent mIntent = getIntent();
         imageId = mIntent.getExtras().getInt("imageId");
         imageName = mIntent.getExtras().getString("imageName");
+        place = mIntent.getExtras().getString("pname");
+        latt = Double.parseDouble(mIntent.getExtras().getString("latt"));
+        longg = Double.parseDouble(mIntent.getExtras().getString("long"));
+        oth = mIntent.getExtras().getString("oth");
+        url = mIntent.getExtras().getString("url");
+        det = mIntent.getExtras().getString("det");
 
 
 
@@ -90,13 +99,10 @@ public class ClickedActivity extends ActionBarActivity {
 //        image = (ImageView) findViewById(R.id.imagepic);
 
         image = (ImageView)findViewById(R.id.imagepic);
-
-
         image_name = (TextView) findViewById(R.id.image_name);
-//        image_namee = (TextView) findViewById(R.id.image_namee);
         image_place = (TextView) findViewById(R.id.image_place);
         image_details = (TextView) findViewById(R.id.image_details);
-        image_other = (TextView) findViewById(R.id.image_other);
+      //  image_other = (TextView) findViewById(R.id.image_other);
 
         one= (TextView) findViewById(R.id.imag);
         two= (TextView) findViewById(R.id.image_d);
@@ -108,16 +114,22 @@ public class ClickedActivity extends ActionBarActivity {
         three.setTypeface(face);
         four.setTypeface(face);
 
-        new GetImage().execute();
+//        new GetImage().execute();
 
         //font
         image_details.setTypeface(face);
         image_place.setTypeface(face);
         image_name.setTypeface(face);
-//        image_namee.setTypeface(face);
 
 
+        image_name.setText(imageName);
+        image_place.setText(place);
+        image_details.setText(det);
 
+//        if(oth!=null)
+//             image_other.setText(oth);
+
+        new GetImage().execute();
         //map
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         //drawMarkerWithCircle(30.043650, 31.236545);
@@ -125,6 +137,7 @@ public class ClickedActivity extends ActionBarActivity {
         map.setMyLocationEnabled(true);
         gps = new GPSTracker(this);
 
+        PutPlacesMarker(latt, longg,imageName);
 
     }
 
@@ -172,9 +185,9 @@ public class ClickedActivity extends ActionBarActivity {
     public void PutPlacesMarker(double h,double l,String place)
     {
 
-        LatLng StaticMine = new LatLng(h ,l);
+        LatLng StaticMine = new LatLng(h, l);
             /*     My location Static One   */
-        Marker meHere = map.addMarker(new MarkerOptions().position(StaticMine).title(place).snippet("I am here in Mac ")
+        Marker meHere = map.addMarker(new MarkerOptions().position(StaticMine).title(place)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
         // zoom in the camera to My place
@@ -188,11 +201,6 @@ public class ClickedActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//
-//            pDialog = new ProgressDialog(ClickedActivity.this);
-//            pDialog.setMessage("Please wait...");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
 
             content.setVisibility(View.INVISIBLE);
             mLoadingView.setVisibility(View.VISIBLE);
@@ -201,59 +209,38 @@ public class ClickedActivity extends ActionBarActivity {
 
         @Override
         protected String doInBackground(Void... arg0) {
-            ServiceHandler servicehandler = new ServiceHandler();
-            String jsonStr = servicehandler.makeServiceCall(SERVICE_URL+"?market_id="+imageId, ServiceHandler.GET);
-            if(jsonStr!=null){
 
-                Gson gson= new Gson();
-                marketobject=gson.fromJson(jsonStr,market.class);
                 try {
 
-                    bitmap = BitmapFactory.decodeStream((InputStream) new URL(marketobject.getMarket_url()).getContent());
+                    bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return "false";
                 }
                 return "true";
-
-            }
-            else
-            {
-                return "false";
             }
 
 
-        }
+
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
            if ( result=="true") {
-//
-//                if(pDialog.isShowing())
-//                pDialog.dismiss();
-                image.setImageBitmap(bitmap);
-                image_name.setText(marketobject.getMarket_name());
-                image_place.setText(marketobject.getPlace_name());
-                image_details.setText(marketobject.getMarket_details());
-               PutPlacesMarker(marketobject.getMarket_latt(), marketobject.getMarket_long(),marketobject.getPlace_name());
 
-               mLoadingView.setVisibility(View.INVISIBLE);
-               content.setVisibility(View.VISIBLE);
-
-//               if(marketobject.getMarket_other()!=null)
-//                    image_other.setText(marketobject.getMarket_other());
+               image.setImageBitmap(bitmap);
+               bitmap=null;
 
             }
-            else{
+           else{
 
-//                pDialog.dismiss();
-//                Toast.makeText(ClickedActivity.this, "Can't reload Network Error", Toast.LENGTH_SHORT).show();
-
-
+                Toast.makeText(ClickedActivity.this, "Can't reload Network Error", Toast.LENGTH_SHORT).show();
 
            }
+            mLoadingView.setVisibility(View.INVISIBLE);
+            content.setVisibility(View.VISIBLE);
 
 
         }

@@ -77,11 +77,14 @@ import java.util.List;
 import java.util.Map;
 
 
+import database.StorageDatabaseAdapter;
 import models.category;
 import models.place;
 import popuplistener.popupspinner;
 import popuplistener.popupview;
 import utils.CustomRequest;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by Asmaa on 21/12/2015.
@@ -102,6 +105,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
     private View mLoadingView;
     private View content;
+    private StorageDatabaseAdapter storageHelper ;
 
 
     private static final String PLACE_ID = "place_id";
@@ -147,7 +151,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
         setContentView(R.layout.add);
 
         Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
-
+        storageHelper = new StorageDatabaseAdapter(this);
         abar = getSupportActionBar();
         abar.setBackgroundDrawable(getResources().getDrawable(R.color.colorPrimary));//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.action_title, null);
@@ -226,18 +230,56 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
         alertDialog.setIcon(R.drawable.status_error);
 
 
+        if(storageHelper.getallplaces().length>0&&storageHelper.getallcategories().length>0){
+            String placesnames[][]=storageHelper.getallplaces();
+            places=new place[placesnames.length+1];
+            places[0]=new place("0","إختر المكان");
 
-        if (isNetworkAvailable(this.getBaseContext())) {
-            // code here
-            Toast.makeText(this, "Network connected", Toast.LENGTH_LONG).show();
+            for(int i=0;i<placesnames.length;i++){
+                places[i+1]=new place(placesnames[i][0],placesnames[i][1]);
+            }
 
-            new GetPlacesCategories().execute();
-        } else {
-            // code
-            Toast.makeText(this, "NO Network connected", Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Plz, Turn on network then try again", Toast.LENGTH_LONG).show();
+            String categoriesnames[][]=storageHelper.getallcategories();
+            categorys=new category[categoriesnames.length+1];
+            categorys[0]=new category("0","إختر الفئة");
+            for(int i=0;i<categoriesnames.length;i++){
+
+                categorys[i]=new category(categoriesnames[i][0],categoriesnames[i][1]);
+
+
+            }
+            dataAdapter = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, places);
+
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            Placespinner.setAdapter(dataAdapter);
+
+            dataAdapter2 = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, categorys);
+
+            // Drop down layout style - list view with radio button
+            dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            Categoryspinner.setAdapter(dataAdapter2);
+            mLoadingView.setVisibility(View.INVISIBLE);
+            content.setVisibility(View.VISIBLE);
 
         }
+        else
+        {
+            if (isNetworkAvailable(this.getBaseContext())) {
+                new GetPlacesCategories().execute();
+            }
+            else{
+                Toast.makeText(this, "NO Network connected", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Plz, Turn on network then try again", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+
 
 
         location.setOnClickListener(new View.OnClickListener() {
@@ -512,6 +554,13 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
 
                         places[i]=new place(place_id,place_name);
+                        try {
+                            int id1 = storageHelper.deleteplace(parseInt(place_id));
+                            long id = storageHelper.insertPlace(parseInt(place_id), place_name);
+                        }
+                        catch(Exception e){
+
+                        }
 
                     }
 
@@ -548,6 +597,13 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
 
                         categorys[i]=new category(cat_id,cat_name);
+                        try {
+                            int id2 = storageHelper.deletecategory(parseInt(cat_id));
+                            long id = storageHelper.insertCategory(parseInt(cat_id), cat_name);
+                        }
+                        catch(Exception e){
+
+                        }
 
                     }
 
@@ -583,10 +639,6 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
             content.setVisibility(View.VISIBLE);
             mLoadingView.setVisibility(View.INVISIBLE);
 
-
-
-
-//            rcAdapter= new SolventRecyclerViewAdapter(MainActivity.this, listViewItems);
 
         }
     }
