@@ -64,6 +64,9 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     private JSONArray categoryarray = null;
     private category[] categorys;
     List<ItemObjects> listViewCategorys;
+    private View mLoadingView;
+    private View content;
+
 
     private String placescategoriesurl = "http://mar.gt4host.com/market/public/webservice/getallplacesandcategories";
 
@@ -109,6 +112,9 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
 
 
+//        mLoadingView = view.findViewById(R.id.loading_spinner_oooo);
+//        content = view.findViewById(R.id.contentooo);
+
 
         listViewItems = new ArrayList<>();
 
@@ -117,8 +123,11 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
         searchBtn = (Button)view.findViewById(R.id.search_btn);
         searchBtn.setTypeface(face);
+        searchBtn.setClickable(false);
 
         if(storageHelper.getallplaces().length>0&&storageHelper.getallcategories().length>0){
+            searchBtn.setClickable(true);
+
             String placesnames[][]=storageHelper.getallplaces();
             places=new place[placesnames.length+1];
             places[0]=new place("0","إختر المكان");
@@ -320,7 +329,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
     }
 
@@ -367,6 +376,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
 //            content.setVisibility(View.INVISIBLE);
 //            mLoadingView.setVisibility(View.VISIBLE);
 
@@ -482,6 +492,12 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
             // attaching data adapter to spinner
             Categoryspinner.setAdapter(dataAdapter2);
+
+            searchBtn.setClickable(true);
+
+//            content.setVisibility(View.VISIBLE);
+//            mLoadingView.setVisibility(View.INVISIBLE);
+
 
 
         }

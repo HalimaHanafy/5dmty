@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -106,6 +107,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
     private View mLoadingView;
     private View content;
     private StorageDatabaseAdapter storageHelper ;
+    public static Typeface face;
 
 
     private static final String PLACE_ID = "place_id";
@@ -150,7 +152,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add);
 
-        Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
+        face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
         storageHelper = new StorageDatabaseAdapter(this);
         abar = getSupportActionBar();
         abar.setBackgroundDrawable(getResources().getDrawable(R.color.colorPrimary));//line under the action bar
@@ -263,8 +265,6 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
             // attaching data adapter to spinner
             Categoryspinner.setAdapter(dataAdapter2);
-            mLoadingView.setVisibility(View.INVISIBLE);
-            content.setVisibility(View.VISIBLE);
 
         }
         else
@@ -442,9 +442,9 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
                 try {
                     hideProgressDialog();
-                    Toast.makeText(getApplicationContext(),
-                            "THE RESPNOSE"+response,
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(),
+//                            "THE RESPNOSE"+response,
+//                            Toast.LENGTH_LONG).show();
                     Log.e("THE RESPNOSE", response.getString("response"));
                     if (response.getString("response").equals("success")) {
                         Toast.makeText(getApplicationContext(),
@@ -496,11 +496,16 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about_us) {
+        if (id == R.id.action_about_uss) {
 
-            Intent i = new Intent(getApplicationContext(), AboutUs.class);
-            startActivity(i);
-        }
+            Dialog dialog = new Dialog(Add.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.aboutus);
+            TextView textView = (TextView) dialog.findViewById(R.id.textViewAboutDialogTitle);
+            textView.setTypeface(face);
+
+            dialog.show();
+            return true;        }
         if (id == R.id.search) {
 
             Intent i = new Intent(getApplicationContext(), search.class);

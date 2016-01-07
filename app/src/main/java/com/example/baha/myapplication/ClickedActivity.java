@@ -1,5 +1,6 @@
 package com.example.baha.myapplication;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +43,10 @@ public class ClickedActivity extends ActionBarActivity {
     private String url;
     private ImageView image;
     private TextView image_name, image_place, image_details, image_other;
-    private TextView one,two,three,four;
+    private TextView one,two,three,four,five;
     private Bitmap bitmap;
+
+    public static Typeface face;
 
     public static GoogleMap map;
     GPSTracker gps;
@@ -61,7 +65,7 @@ public class ClickedActivity extends ActionBarActivity {
         mLoadingView = findViewById(R.id.loading_spinner);
         content = findViewById(R.id.content);
 
-        Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
+        face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
 
         abar = getSupportActionBar();
         abar.setBackgroundDrawable(getResources().getDrawable(R.color.colorPrimary));//line under the action bar
@@ -102,17 +106,19 @@ public class ClickedActivity extends ActionBarActivity {
         image_name = (TextView) findViewById(R.id.image_name);
         image_place = (TextView) findViewById(R.id.image_place);
         image_details = (TextView) findViewById(R.id.image_details);
-      //  image_other = (TextView) findViewById(R.id.image_other);
+        image_other = (TextView) findViewById(R.id.image_other);
 
         one= (TextView) findViewById(R.id.imag);
         two= (TextView) findViewById(R.id.image_d);
         three= (TextView) findViewById(R.id.image_de);
         four= (TextView) findViewById(R.id.image_pace);
+        five= (TextView) findViewById(R.id.new_txt);
 
         one.setTypeface(face);
         two.setTypeface(face);
         three.setTypeface(face);
         four.setTypeface(face);
+        five.setTypeface(face);
 
 //        new GetImage().execute();
 
@@ -120,14 +126,15 @@ public class ClickedActivity extends ActionBarActivity {
         image_details.setTypeface(face);
         image_place.setTypeface(face);
         image_name.setTypeface(face);
+        image_other.setTypeface(face);
 
 
         image_name.setText(imageName);
         image_place.setText(place);
         image_details.setText(det);
 
-//        if(oth!=null)
-//             image_other.setText(oth);
+//        if(oth!="")
+             image_other.setText(oth);
 
         new GetImage().execute();
         //map
@@ -165,12 +172,15 @@ public class ClickedActivity extends ActionBarActivity {
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about_us) {
+        if (id == R.id.action_about_uss) {
 
-            Intent i = new Intent(getApplicationContext(), AboutUs.class);
-            startActivity(i);
-            finish();
-
+            Dialog dialog = new Dialog(ClickedActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.aboutus);
+            TextView textView = (TextView) dialog.findViewById(R.id.textViewAboutDialogTitle);
+            textView.setTypeface(face);
+            dialog.show();
+            return true;
         }
         if (id == R.id.search) {
 
@@ -237,7 +247,6 @@ public class ClickedActivity extends ActionBarActivity {
            else{
 
                 Toast.makeText(ClickedActivity.this, "Can't reload Network Error", Toast.LENGTH_SHORT).show();
-
            }
             mLoadingView.setVisibility(View.INVISIBLE);
             content.setVisibility(View.VISIBLE);

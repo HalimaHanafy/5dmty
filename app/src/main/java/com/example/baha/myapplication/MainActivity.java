@@ -1,6 +1,7 @@
 package com.example.baha.myapplication;
 
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,9 @@ import database.StorageDatabaseAdapter;
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayout.OnRefreshListener{
+
+
+    public static Typeface face;
     private ArrayList<ItemObjects> designs;
     private StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private RecyclerView recyclerView;
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         storageHelper = new StorageDatabaseAdapter(this);
-        Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
+        face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
 
         abar = getSupportActionBar();
 
@@ -101,7 +106,6 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                                     @Override
                                     public void run() {
                                         marketscache=storageHelper.getallmarket();
-
                                         if(marketscache.length>0){
                                             cachedmovieList.clear();
                                             for(int i=0;i<marketscache.length;i++){
@@ -156,9 +160,19 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about_us) {
-            Intent i = new Intent(getApplicationContext(), AboutUs.class);
-            startActivity(i);
+        if (id == R.id.action_about_uss) {
+
+
+            Dialog dialog = new Dialog(MainActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.aboutus);
+            TextView textView = (TextView) dialog.findViewById(R.id.textViewAboutDialogTitle);
+            textView.setTypeface(face);
+            dialog.show();
+            return true;
+
+
+
         }
         if (id == R.id.search) {
             Intent i = new Intent(getApplicationContext(), search.class);
@@ -209,13 +223,21 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                         String img_latt = c.getString("market_latt");
                         String img_updates = c.getString("market_updates");
 
+                        if (img_other=="null")
+                        {
+                            img_other="لا توجد معلومات أخرى.";
+                        }
+
                         try {
                             int deleteid=storageHelper.deletemarket(img_id);;
                             long insertedid = storageHelper.insertMarket(img_id, img_name, img_url, img_details, img_other,img_place, img_long, img_latt, img_updates);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                         ItemObjects m = new ItemObjects(img_id,img_name,img_url,img_place,img_details,img_other,img_long,img_latt);
+
+
                         for(int j=0;j<cachedmovieList.size();j++){
                             if(cachedmovieList.get(j).getId()==img_id){
                                 listid=true;

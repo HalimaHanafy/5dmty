@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:textSize="13sp"
             android:text="إعرف المزيد..."
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="right"
             android:paddingRight="7dp"
             android:paddingBottom="8dp"

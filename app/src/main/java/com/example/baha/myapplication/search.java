@@ -1,5 +1,6 @@
 package com.example.baha.myapplication;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 public class search extends AppCompatActivity implements FirstFragment.OnFragmentInteractionListener{
 
 
+    public static Typeface face;
     android.support.v7.app.ActionBar abar;
     public View mLoadingView;
     public View content;
@@ -38,7 +41,7 @@ public class search extends AppCompatActivity implements FirstFragment.OnFragmen
 
 
 
-        Typeface face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
+        face= Typeface.createFromAsset(getAssets(), "fonts/DroidKufi-Bold.ttf");
 
         abar = getSupportActionBar();
         abar.setBackgroundDrawable(getResources().getDrawable(R.color.colorPrimary));//line under the action bar
@@ -101,9 +104,14 @@ public class search extends AppCompatActivity implements FirstFragment.OnFragmen
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about_us) {
 
-            Intent i = new Intent(getApplicationContext(), AboutUs.class);
-            startActivity(i);
+            Dialog dialog = new Dialog(search.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.aboutus);
+            TextView textView = (TextView) dialog.findViewById(R.id.textViewAboutDialogTitle);
+            textView.setTypeface(face);
 
+            dialog.show();
+            return true;
         }
         if (id == R.id.search) {
 

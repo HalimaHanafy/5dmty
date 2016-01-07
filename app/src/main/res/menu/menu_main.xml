@@ -5,17 +5,17 @@
 
 
 
-    <item android:id="@+id/action_about_us"
-        android:title="@string/action_about_us"
-        android:orderInCategory="2"
-        app:showAsAction="never" />
-
 
     <item android:id="@+id/search"
         android:title="@string/search"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/action_about_uss"
+        android:title="@string/action_about_us"
+        android:orderInCategory="2"
+        android:icon="@drawable/about"
         app:showAsAction="ifRoom" />
 
 </menu>

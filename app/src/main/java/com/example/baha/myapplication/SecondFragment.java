@@ -45,7 +45,7 @@ public class SecondFragment extends Fragment {
 
     public void updateTextField(String newText,String newPlace,String newCat,ArrayList<ItemObjects> newList){
 
-        Log.d("txt>>",newText);
+        Log.d("txt>>", newText);
 
 
 
@@ -54,9 +54,13 @@ public class SecondFragment extends Fragment {
         rcAdapter = new SolventRecyclerViewAdapter(getActivity(), newList);
         recyclerView.setAdapter(rcAdapter);
 
-        if(rcAdapter.getItemCount()==0)
+        if(newText.equals("")&&newPlace.equals("")&&newCat.equals("")&&newList.size()==0)
         {
             updateText.setText("من فضلك أدخل على الأقل الإسم أو الفئة أو المكان !");
+        }
+        else if((!newText.equals("")||!newPlace.equals("")||!newCat.equals(""))&&newList.size()==0)
+        {
+            updateText.setText("لا توجد بيانات فى هذا البحث !");
         }
         else
         {

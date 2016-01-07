@@ -214,10 +214,10 @@ public class StorageDatabaseAdapter {
             // super ( context , database name , custom cursor , version number )
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             this.context = context;
-            Log.i("query", CREATE_TABLE_MARKET);
-            Log.i("query", CREATE_TABLE_PLACE);
-            Log.i("query", CREATE_TABLE_CATEGORY);
-            Toast.makeText(context, "constructor is called", Toast.LENGTH_LONG).show();
+//            Log.i("query", CREATE_TABLE_MARKET);
+//            Log.i("query", CREATE_TABLE_PLACE);
+//            Log.i("query", CREATE_TABLE_CATEGORY);
+//            Toast.makeText(context, "constructor is called", Toast.LENGTH_LONG).show();
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
@@ -227,10 +227,10 @@ public class StorageDatabaseAdapter {
                 db.execSQL(CREATE_TABLE_MARKET);
                 db.execSQL(CREATE_TABLE_PLACE);
                 db.execSQL(CREATE_TABLE_CATEGORY);
-                Toast.makeText(context, "on create", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "on create", Toast.LENGTH_LONG).show();
             } catch (SQLException e) {
 
-                Toast.makeText(context, "on create exception", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "on create exception", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -244,9 +244,9 @@ public class StorageDatabaseAdapter {
                 db.execSQL(CREATE_TABLE_PLACE);
                 db.execSQL(CREATE_TABLE_CATEGORY);
                 onCreate(db);
-                Toast.makeText(context, "upgrade", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "upgrade", Toast.LENGTH_LONG).show();
             } catch (SQLException e) {
-                Toast.makeText(context, " upgrade exception", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, " upgrade exception", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#eee"
-    android:id="@+id/content8"
-    android:clipToPadding="false"
-    android:paddingTop="0dp">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialogLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_margin="10dp"
-        android:src="@drawable/logo_about"
-        android:id="@+id/imageView2" />
     <TextView
+        android:id="@+id/textViewAboutDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="نحن شركه برمجيات تفتخر ان تقدم خدمات متقدمه ومتطوره للعملاءها وتساعدهم على تطوير اعمالهم والوصول الى حصه تسويقيه من على الانترنت, ونفتخر اننا ومنذوا البدايه التى لا تعد كبيره حتى الان فى السوق الا اننا نثبت كل يوم عن الاخر اننا نتميز عن غيرنا من المؤسسات البرمجيه باكثر شىء و افضل شىء فى المؤسسه وهو الدعم الفنى بعد البيع.
+        android:layout_marginTop="15dp"
+        android:text="من نحن"
+        android:textSize="25dp"
+        android:paddingRight="30dp"
+        android:gravity="right"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/fab" />
 
-"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/textViewAboutDialogDialog"
+        android:layout_width="303dp"
+        android:layout_height="96dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:padding="5dp"
 
-        android:textSize="20dp"
-        android:id="@+id/txt"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
-</ScrollView>
+        android:src="@drawable/logo_about"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorPrimaryDark" />
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_marginBottom="24dp"
+        android:layout_row="2"
+        android:autoLink="web"
+        android:gravity="center"
+        android:text="http://www.cr-prog.com/"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="?attr/colorAccent"
+        android:textColorLink="@color/wallet_link_text_light" />
+
+</LinearLayout>

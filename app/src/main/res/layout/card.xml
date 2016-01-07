@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_width="wrap_content">-->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_namee"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/one"/>
+                    android:src="@drawable/add"/>
 
                 <TextView
                     android:id="@+id/image_name"
@@ -140,7 +140,7 @@
 
                     android:id="@+id/map"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     class="com.google.android.gms.maps.MapFragment"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
@@ -162,10 +162,10 @@
 </ScrollView>
 
 
-<ProgressBar android:id="@+id/loading_spinner"
-style="?android:progressBarStyleLarge"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:layout_gravity="center" />
+<!--<ProgressBar android:id="@+id/loading_spinner"-->
+<!--style="?android:progressBarStyleLarge"-->
+<!--android:layout_width="fill_parent"-->
+<!--android:layout_height="fill_parent"-->
+<!--android:layout_gravity="center" />-->
 
-</RelativeLayout>
+<!--</RelativeLayout>-->
