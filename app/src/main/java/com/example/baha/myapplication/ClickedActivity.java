@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class ClickedActivity extends ActionBarActivity {
-    private static String SERVICE_URL = "http://mar.gt4host.com/market/public/webservice/getimage";
+    private static String SERVICE_URL = "http://sp.cr-prog.com/market/public/webservice/getimage";
     private ProgressDialog pDialog;
     private int imageId;
     private String imageName;

@@ -98,8 +98,8 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
     private String locationlong,locationlatt;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
-    private String inserturl = "http://mar.gt4host.com/market/public/webservice/insert";
-    private String placescategoriesurl = "http://mar.gt4host.com/market/public/webservice/getallplacesandcategories";
+    private String inserturl = "http://sp.cr-prog.com/market/public/webservice/insert";
+    private String placescategoriesurl = "http://sp.cr-prog.com/market/public/webservice/getallplacesandcategories";
 
     private ProgressDialog pDialog;
     private String encodedImage;
@@ -525,6 +525,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
             content.setVisibility(View.INVISIBLE);
             mLoadingView.setVisibility(View.VISIBLE);
 
@@ -625,25 +626,33 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
             Log.d("ResultPlaces: >>", result + "");
 
-            dataAdapter = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, places);
+            if(result !=null) {
+                dataAdapter = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, places);
 
-            // Drop down layout style - list view with radio button
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Drop down layout style - list view with radio button
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            // attaching data adapter to spinner
-            Placespinner.setAdapter(dataAdapter);
+                // attaching data adapter to spinner
+                Placespinner.setAdapter(dataAdapter);
 
-            dataAdapter2 = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, categorys);
+                dataAdapter2 = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, categorys);
 
-            // Drop down layout style - list view with radio button
-            dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Drop down layout style - list view with radio button
+                dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            // attaching data adapter to spinner
-            Categoryspinner.setAdapter(dataAdapter2);
+                // attaching data adapter to spinner
+                Categoryspinner.setAdapter(dataAdapter2);
 
-            content.setVisibility(View.VISIBLE);
-            mLoadingView.setVisibility(View.INVISIBLE);
+                content.setVisibility(View.VISIBLE);
+                mLoadingView.setVisibility(View.INVISIBLE);
 
+            }
+            else
+            {
+                content.setVisibility(View.INVISIBLE);
+                mLoadingView.setVisibility(View.VISIBLE);
+
+            }
 
         }
     }

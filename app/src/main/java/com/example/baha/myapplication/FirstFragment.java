@@ -24,6 +24,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,10 +70,10 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     private View content;
 
 
-    private String placescategoriesurl = "http://mar.gt4host.com/market/public/webservice/getallplacesandcategories";
+    private String placescategoriesurl = "http://sp.cr-prog.com/market/public/webservice/getallplacesandcategories";
 
 
-    private static String SERVICE_URL_search = "http://mar.gt4host.com/market/public/webservice/search";
+    private static String SERVICE_URL_search = "http://sp.cr-prog.com/market/public/webservice/search";
     private static final String MARKET_ID = "market_id";
     private static final String MARKET_NAME = "market_name";
     private static final String MARKET_URL = "market_url";
@@ -270,12 +272,15 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         @Override
         protected ArrayList<ItemObjects> doInBackground(Void... arg0) {
             ServiceHandler servicehandler = new ServiceHandler();
-            String jsonStr = servicehandler.makeServiceCall(SERVICE_URL_search+"?name="+selected_name+"&place="+selected_place+"&category="+selected_cat, ServiceHandler.GET);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("name",""+selected_name));
+            nameValuePairs.add(new BasicNameValuePair("place", "" + selected_place));
+            nameValuePairs.add(new BasicNameValuePair("category", "" + selected_cat));
+            String jsonStr = servicehandler.makeServiceCall(SERVICE_URL_search, ServiceHandler.GET,nameValuePairs);
             if(jsonStr!=null){
                 Log.d("Markets >>",jsonStr);
                 listViewItems.clear();
                 try {
-//                    JSONObject jsonObj = new JSONObject(jsonStr);
                     market = new JSONArray(jsonStr);
                     for (int i = 0; i < market.length(); i++) {
                         JSONObject c = market.getJSONObject(i);
@@ -477,23 +482,26 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
             Log.d("ResultPlaces: >>", result + "");
 
-            dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, places);
+            if (result!=null) {
+                dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, places);
 
-            // Drop down layout style - list view with radio button
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Drop down layout style - list view with radio button
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            // attaching data adapter to spinner
-            Placespinner.setAdapter(dataAdapter);
+                // attaching data adapter to spinner
+                Placespinner.setAdapter(dataAdapter);
 
-            dataAdapter2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, categorys);
+                dataAdapter2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, categorys);
 
-            // Drop down layout style - list view with radio button
-            dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Drop down layout style - list view with radio button
+                dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            // attaching data adapter to spinner
-            Categoryspinner.setAdapter(dataAdapter2);
+                // attaching data adapter to spinner
+                Categoryspinner.setAdapter(dataAdapter2);
 
-            searchBtn.setClickable(true);
+                searchBtn.setClickable(true);
+
+            }
 
 //            content.setVisibility(View.VISIBLE);
 //            mLoadingView.setVisibility(View.INVISIBLE);

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     android.support.v7.app.ActionBar abar;
     private String marketscache[][];
 
-    private String URL_TOP_250 = "http://mar.gt4host.com/market/public/webservice/listallmarkets";
+    private String URL_TOP_250 = "http://sp.cr-prog.com/market/public/webservice/listallmarkets";
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private SwipeListAdapter adapter;
