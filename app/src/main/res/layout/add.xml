@@ -113,9 +113,10 @@
 
 <ProgressBar android:id="@+id/loading_spinner8"
 style="?android:progressBarStyleLarge"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
 android:padding="100dp"
+    android:layout_margin="100dp"
     android:visibility="invisible"
 android:layout_gravity="center"
 android:indeterminate="false" />

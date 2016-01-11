@@ -1,6 +1,5 @@
 package com.example.baha.myapplication;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -30,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import database.StorageDatabaseAdapter;
+
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayout.OnRefreshListener{
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
     android.support.v7.app.ActionBar abar;
     private String marketscache[][];
 
-    private String URL_TOP_250 = "http://sp.cr-prog.com/market/public/webservice/listallmarkets";
+    private String URL_TOP_250 = "http://5dmty.cr-prog.com/_lpanel/webservice/listallmarkets";
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private SwipeListAdapter adapter;
@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
                                         else{
                                             swipeRefreshLayout.setRefreshing(true);
                                             gaggeredGridLayoutManager.invalidateSpanAssignments();
+
                                             new GetMarkets().execute();
                                         }
 
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity  implements SwipeRefreshLayo
         protected String doInBackground(Void... arg0) {
             offSet=sharedPref.getInt("offset", 0);
             ServiceHandler servicehandler = new ServiceHandler();
-            String jsonStr = servicehandler.makeServiceCall(URL_TOP_250+"?offset="+offSet, ServiceHandler.GET);
+            String jsonStr = servicehandler.makeServiceCall(URL_TOP_250+"/"+offSet, ServiceHandler.POST);
             if(jsonStr!=null){
                 Log.d("Markets >>",jsonStr);
                 Boolean listid=false;

@@ -98,8 +98,8 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
     private String locationlong,locationlatt;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
-    private String inserturl = "http://sp.cr-prog.com/market/public/webservice/insert";
-    private String placescategoriesurl = "http://sp.cr-prog.com/market/public/webservice/getallplacesandcategories";
+    private String inserturl = "http://5dmty.cr-prog.com/_lpanel/webservice/insert";
+    private String placescategoriesurl = "http://5dmty.cr-prog.com/_lpanel/webservice/getallplacesandcategories";
 
     private ProgressDialog pDialog;
     private String encodedImage;
@@ -234,16 +234,16 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
         if(storageHelper.getallplaces().length>0&&storageHelper.getallcategories().length>0){
             String placesnames[][]=storageHelper.getallplaces();
-            places=new place[placesnames.length+1];
-            places[0]=new place("0","إختر المكان");
+            places=new place[placesnames.length];
+
 
             for(int i=0;i<placesnames.length;i++){
-                places[i+1]=new place(placesnames[i][0],placesnames[i][1]);
+                places[i]=new place(placesnames[i][0],placesnames[i][1]);
             }
 
             String categoriesnames[][]=storageHelper.getallcategories();
-            categorys=new category[categoriesnames.length+1];
-            categorys[0]=new category("0","إختر الفئة");
+            categorys=new category[categoriesnames.length];
+
             for(int i=0;i<categoriesnames.length;i++){
 
                 categorys[i]=new category(categoriesnames[i][0],categoriesnames[i][1]);
@@ -560,6 +560,8 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
 
                         places[i]=new place(place_id,place_name);
+
+
                         try {
                             int id1 = storageHelper.deleteplace(parseInt(place_id));
                             long id = storageHelper.insertPlace(parseInt(place_id), place_name);
@@ -626,7 +628,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
 
             Log.d("ResultPlaces: >>", result + "");
 
-            if(result !=null) {
+            if(result !=null&&result!="") {
                 dataAdapter = new ArrayAdapter(Add.this, android.R.layout.simple_spinner_item, places);
 
                 // Drop down layout style - list view with radio button
@@ -649,6 +651,7 @@ public class Add extends ActionBarActivity implements AdapterView.OnItemSelected
             }
             else
             {
+                Toast.makeText(getBaseContext(),"wifi not connected",Toast.LENGTH_LONG).show();
                 content.setVisibility(View.INVISIBLE);
                 mLoadingView.setVisibility(View.VISIBLE);
 

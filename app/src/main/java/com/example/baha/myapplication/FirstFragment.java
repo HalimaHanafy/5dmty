@@ -24,14 +24,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.apache.commons.codec.Decoder;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,12 +72,14 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     List<ItemObjects> listViewCategorys;
     private View mLoadingView;
     private View content;
+    category catobject;
+    place placeobject;
 
 
-    private String placescategoriesurl = "http://sp.cr-prog.com/market/public/webservice/getallplacesandcategories";
+    private String placescategoriesurl = "http://5dmty.cr-prog.com/_lpanel/webservice/getallplacesandcategories";
 
 
-    private static String SERVICE_URL_search = "http://sp.cr-prog.com/market/public/webservice/search";
+    private static String SERVICE_URL_search = "http://5dmty.cr-prog.com/_lpanel/webservice/search";
     private static final String MARKET_ID = "market_id";
     private static final String MARKET_NAME = "market_name";
     private static final String MARKET_URL = "market_url";
@@ -131,16 +137,15 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
             searchBtn.setClickable(true);
 
             String placesnames[][]=storageHelper.getallplaces();
-            places=new place[placesnames.length+1];
-            places[0]=new place("0","إختر المكان");
+            places=new place[placesnames.length];
 
             for(int i=0;i<placesnames.length;i++){
-                places[i+1]=new place(placesnames[i][0],placesnames[i][1]);
+                places[i]=new place(placesnames[i][0],placesnames[i][1]);
             }
 
             String categoriesnames[][]=storageHelper.getallcategories();
-            categorys=new category[categoriesnames.length+1];
-            categorys[0]=new category("0","إختر الفئة");
+            categorys=new category[categoriesnames.length];
+
             for(int i=0;i<categoriesnames.length;i++){
 
                 categorys[i]=new category(categoriesnames[i][0],categoriesnames[i][1]);
@@ -185,50 +190,46 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                     // code here
                     Toast.makeText(getActivity(), "Network connected", Toast.LENGTH_LONG).show();
 
-                    selected_name = userInput.getText().toString();
-                    selected_place = Placespinner.getSelectedItem().toString();
-                    selected_cat = Categoryspinner.getSelectedItem().toString();
+                    selected_name = userInput.getText().toString().trim();
+                    selected_place = placeobject.getId();
+                    selected_cat = catobject.getId();
 
-                    if(selected_cat.equals("متعلقات شخصية"))
-                    {
-                        selected_cat="متعلقات%20شخصية";
-                    }
 
                     //only name
-                    if(selected_name!=""&&selected_place.equals( "إختر المكان")&&selected_cat.equals("إختر الفئة")) {
+                    if(selected_name!=""&&selected_place.equals("-1")&&selected_cat.equals("-1")) {
                         selected_place="";
                         selected_cat="";
                         new GetMarkets().execute();
                     }
 
                     //only place
-                    else if(selected_name==""&&selected_place!=""&&selected_cat.equals("إختر الفئة")) {
+                    else if(selected_name==""&&!selected_place.equals("-1")&&selected_cat.equals("-1")) {
                         selected_name="";
                         selected_cat="";
                         new GetMarkets().execute();
                     }
 
                     //only cat
-                    else if(selected_name==""&&selected_place.equals( "إختر المكان")&&selected_cat!="") {
+                    else if(selected_name==""&&selected_place.equals("-1")&&!selected_cat.equals("-1")) {
                         selected_name="";
                         selected_place="";
                         new GetMarkets().execute();
                     }
 
                     //name and place
-                    else if(selected_name!=""&&selected_place!=""&&selected_cat.equals("إختر الفئة")) {
+                    else if(selected_name!=""&&!selected_place.equals("-1")&&selected_cat.equals("-1")) {
                         selected_cat="";
                         new GetMarkets().execute();
                     }
 
                     //name and cat
-                    else if(selected_name!=""&&selected_place.equals( "إختر المكان")&&selected_cat!="") {
+                    else if(selected_name!=""&&selected_place.equals("-1")&&!selected_cat.equals("-1")) {
                         selected_place="";
                         new GetMarkets().execute();
                     }
 
                     //place and cat
-                    else if(selected_name==""&&selected_place!=""&&selected_cat!="") {
+                    else if(selected_name==""&&!selected_place.equals("-1")&&!selected_cat.equals("-1")) {
                         selected_name="";
                         new GetMarkets().execute();
                     }
@@ -269,14 +270,16 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
         }
 
+
         @Override
         protected ArrayList<ItemObjects> doInBackground(Void... arg0) {
             ServiceHandler servicehandler = new ServiceHandler();
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("name",""+selected_name));
-            nameValuePairs.add(new BasicNameValuePair("place", "" + selected_place));
-            nameValuePairs.add(new BasicNameValuePair("category", "" + selected_cat));
-            String jsonStr = servicehandler.makeServiceCall(SERVICE_URL_search, ServiceHandler.GET,nameValuePairs);
+
+                nameValuePairs.add(new BasicNameValuePair("name", selected_name));
+            nameValuePairs.add(new BasicNameValuePair("place",selected_place));
+            nameValuePairs.add(new BasicNameValuePair("category", selected_cat));
+            String jsonStr = servicehandler.makeServiceCall(SERVICE_URL_search, ServiceHandler.POST,nameValuePairs);
             if(jsonStr!=null){
                 Log.d("Markets >>",jsonStr);
                 listViewItems.clear();
@@ -331,10 +334,8 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        // Showing selected spinner item
-//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        catobject= (category)Categoryspinner.getSelectedItem();
+        placeobject=(place)Placespinner.getSelectedItem();
 
     }
 
@@ -404,7 +405,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                     JSONObject c;
                     for (int i = 0; i < placearray.length()+1; i++) {
                         if(i==0) {
-                            place_id = "0";
+                            place_id = "-1";
                             place_name = "إختر المكان";
                         }
                         else
@@ -446,7 +447,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
 
                         if(i==0) {
-                            cat_id = "0";
+                            cat_id = "-1";
                             cat_name = "إختر الفئة";
                         }
                         else
@@ -482,7 +483,9 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
             Log.d("ResultPlaces: >>", result + "");
 
-            if (result!=null) {
+            if (result!=null&&result!="") {
+
+
                 dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, places);
 
                 // Drop down layout style - list view with radio button
